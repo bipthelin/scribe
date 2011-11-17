@@ -1,6 +1,15 @@
 cmake_minimum_required (VERSION 2.6)
 project (scribe) 
 
+# Check for JNI
+find_package(JNI)
+
+if (JNI_FOUND)
+    include_directories(${JNI_INCLUDE_DIRS})
+endif()
+
+set(CMAKE_CXX_FLAGS "-DUSE_SCRIBE_HDFS")
+
 # Check Thrift version
 find_program(THRIFT_BIN thrift)
 exec_program(${THRIFT_BIN} ARGS -version OUTPUT_VARIABLE THRIFT_VERSION)
@@ -20,7 +29,7 @@ else((tv_major STREQUAL 0) AND (tv_minor STRLESS 7))
     exec_program(${THRIFT_BIN} ARGS -o src --gen cpp:pure_enums if/scribe.thrift)
 endif((tv_major STREQUAL 0) AND (tv_minor STRLESS 7))
 
-set(CMAKE_CXX_FLAGS "-O2 -Wall -Wno-long-long -Wno-variadic-macros -Wno-return-type -Wno-unused-variable -Wno-reorder -DBOOST_FILESYSTEM_VERSION=2")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2 -Wall -Wno-long-long -Wno-variadic-macros -Wno-return-type -Wno-unused-variable -Wno-reorder -DBOOST_FILESYSTEM_VERSION=2")
 
 add_subdirectory (src/gen-cpp) 
 

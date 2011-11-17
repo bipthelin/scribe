@@ -4,6 +4,7 @@ SET(headers
 	conn_pool.h
 	dynamic_bucket_updater.h
 	env_default.h
+	HdfsFile.h
 	file.h
 	network_dynamic_config.h
 	store_queue.h
@@ -16,6 +17,7 @@ SET(sources
     conn_pool.cpp
     dynamic_bucket_updater.cpp
     env_default.cpp
+    HdfsFile.cpp
     file.cpp
     network_dynamic_config.cpp
     store_queue.cpp
@@ -41,6 +43,9 @@ INCLUDE_DIRECTORIES(${THRIFT_INCLUDE_DIR})
 FIND_LIBRARY(THRIFT_LIB thrift)
 FIND_LIBRARY(THRIFT_NB_LIB thriftnb)
 
+# HDFS
+FIND_LIBRARY(LIB_HDFS hdfs)
+
 # Scribe interfaces
 INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR})
 
@@ -51,6 +56,7 @@ target_link_libraries(scribe
     ${EVENT_LIB}
     ${THRIFT_LIB}
     ${THRIFT_NB_LIB}
+    ${LIB_HDFS}
 )
 
 INSTALL(TARGETS scribe DESTINATION bin)
